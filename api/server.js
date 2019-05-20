@@ -8,6 +8,7 @@ const registerRouter = require("../routes/register/register-router.js");
 const loginRouter = require("../routes/login/login-router.js");
 const usersRouter = require("../routes/users/users-router.js");
 const logoutRouter = require("../routes/logout/logout-router.js");
+const storiesRouter = require("../routes/stories/stories-router.js");
 
 // configure global middlewares
 server.use(helmet());
@@ -18,6 +19,7 @@ server.use("/register", registerRouter);
 server.use("/login", loginRouter);
 server.use("/users", usersRouter);
 server.use("/logout", logoutRouter);
+server.use("/stories", storiesRouter);
 
 // sanity check route
 server.get("/", (req, res) => {
