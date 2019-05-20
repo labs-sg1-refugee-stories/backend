@@ -3,14 +3,13 @@ const db = require("../../database/dbConfig.js");
 module.exports = {
   add,
   find,
-  // findBy,
   findById,
   update,
   remove
 };
 
 function find() {
-  return db("stories").select("title", "name", "storytext", "country");
+  return db("stories").select("id", "title", "name", "storytext", "country");
 }
 
 function findById(id) {
@@ -47,7 +46,3 @@ function remove(id) {
     .where({ id })
     .del();
 }
-
-// function findBy(filter) {
-//   return db("stories").where(filter);
-// }
