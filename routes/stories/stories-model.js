@@ -19,7 +19,7 @@ function findById(id) {
 }
 
 function add(story) {
-  // passing 'id' as the second parameter is recommended to ensure the id is returned
+  // passing "id" as the second parameter is recommended to ensure the id is returned
   // when connecting to other database management systems like Postgres
   return db("stories")
     .insert(story, "id")
