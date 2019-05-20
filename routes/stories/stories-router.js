@@ -4,16 +4,15 @@ const Stories = require("./stories-model.js");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  Stories.find()
-    .then(stories => {
-      res.status(200).json(stories);
-    })
-    .catch(error => {
-      res
-        .status(500)
-        .json({ message: "We ran into an error retrieving the stories." });
-    });
+router.get("/", async (req, res) => {
+  try {
+    const stories = await Stories.find();
+    res.status(200).json(stories);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "We ran into an error retrieving the stories." });
+  }
 });
 
 router.get("/:id", async (req, res) => {
@@ -35,7 +34,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const story = req.body;
 
-  if (story.name && story.storytext && story.country) {
+  if (story.title && story.storytext && story.country) {
     try {
       const inserted = await Stories.add(story);
       res.status(201).json(inserted);

@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function find() {
-  return db("stories").select("name", "storytext", "country");
+  return db("stories").select("title", "name", "storytext", "country");
 }
 
 function findById(id) {
