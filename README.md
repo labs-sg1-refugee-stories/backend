@@ -1,9 +1,11 @@
 # Refugee Stories - Backend
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
+
+## Technical Design Document
+[Technical Design Document](https://docs.google.com/document/d/1AZU1sWxj3n63dbdo91oi3M3fNJRERgi_ZXTMFo9l7DU/edit?usp=sharing)
 
 # API Documentation
 
-#### Backend Deployment: _add URL here_ <br>
+#### Backend Deployment: https://refugee-stories-api.herokuapp.com/ <br>
 
 🚫This is a placeholder, replace the endpoints, accress controll, and descriptioin to match your project
 
