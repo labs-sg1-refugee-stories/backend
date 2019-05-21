@@ -1,10 +1,10 @@
 const router = require("express").Router();
 
 const actions = require("./admin-model.js");
-const restricted = require("../../auth/restricted-middleware.js");
+//const restricted = require("../../auth/restricted-middleware.js");
 
 // GET for /admin/stories
-router.get("/stories", restricted, async (req, res) => {
+router.get("/stories", async (req, res) => {
   try {
     const stories = await actions.getPendingStories();
     res.status(200).json(stories);

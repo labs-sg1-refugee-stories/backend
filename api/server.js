@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const logger = require("morgan");
 
 const server = express();
 
@@ -22,6 +23,7 @@ server.use("/users", usersRouter);
 server.use("/logout", logoutRouter);
 server.use("/stories", storiesRouter);
 server.use("/admin", adminRouter);
+server.use(logger("dev"));
 
 // sanity check route
 server.get("/", (req, res) => {
