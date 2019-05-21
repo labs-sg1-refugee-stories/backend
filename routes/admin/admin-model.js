@@ -2,7 +2,7 @@ const db = require("../../database/dbConfig.js");
 
 module.exports = {
   getPendingStories,
-  approveStory,
+  // approveStory,
   rejectStory,
   postPendingStory,
   findById
