@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
     if (story) {
       res.status(200).json(story);
     } else {
-      res.status(404).json({ message: "We could not find a strory." });
+      res.status(404).json({ message: "We could not find a story." });
     }
   } catch (error) {
     res
