@@ -66,4 +66,22 @@ router
     }
   });
 
+router.post("/stories", async (req, res) => {
+  const story = req.body;
+
+  if (story.title && story.storytext && story.country) {
+    try {
+      const inserted = await actions.postPendingStory(story);
+      res.status(201).json(inserted);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "We ran into an error adding your story." });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: "Please enter your story, name and country." });
+  }
+});
 module.exports = router;
