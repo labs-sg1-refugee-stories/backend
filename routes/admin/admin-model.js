@@ -3,7 +3,9 @@ const db = require("../../database/dbConfig.js");
 module.exports = {
   getPendingStories,
   approveStory,
-  rejectStory
+  rejectStory,
+  postPendingStory,
+  findById
 };
 
 function getPendingStories() {
@@ -50,4 +52,16 @@ function rejectStory(id) {
   return db("pending_stories")
     .where({ id })
     .del();
+}
+
+async function postPendingStory(post) {
+  const [id] = await db("pending_stories").insert(post);
+
+  return findById(id);
+}
+
+function findById(id) {
+  return db("pending_stories")
+    .where({ id })
+    .first();
 }
