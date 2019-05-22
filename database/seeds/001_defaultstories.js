@@ -25,6 +25,20 @@ exports.seed = function(knex, Promise) {
           storytext:
             "In 2012, after a journey across Europe, he settles down in Belgium where he asks for asylum. Following some bad news, he sinks into a form of anorexia. 5 years later, he tells how sport allowed him to face racism and the harshness of Belgian life.",
           country: "Belgium"
+        },
+        {
+          title: "From Congo to Uganda",
+          name: "Elias Nagwano",
+          storytext:
+            "Elias Nagwano fled his native Congo in 2013. Directly affected by the war, he had to leave everything behind to seek safety in Uganda. From everyday challenges to life-changing decisions, he tells us how he has managed to rebuild his life and realize his dreams despite everything.",
+          country: "Congolese"
+        },
+        {
+          title: "The Price of Battle",
+          name: "Ramy Ayari",
+          storytext:
+            "He has been living in exile in Montreal since 2016. An activist and spokesperson in the LGBTQ+ community, he fled his country because it was no longer safe for him to keep fighting for the cause. Here, he reflects on an activist journey that has been anything but ordinary.",
+          country: "Tunisia"
         }
       ]);
     });
