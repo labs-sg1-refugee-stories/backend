@@ -8,7 +8,6 @@ const secrets = require("../../config/secrets.js");
 const router = express.Router();
 
 // Use the credentials sent inside the body to authenticate the user. On successful login,
-//  create a new JWT with the user id as the subject and send it back to the client.
 // If login fails, respond with the correct status code and the message: 'You shall not pass!'
 router.post("/", (req, res) => {
   let { username, password } = req.body;
@@ -20,7 +19,8 @@ router.post("/", (req, res) => {
         const token = generateToken(user);
         res
           .status(200)
-          .json({ message: `Successfully logged in ${username}!`, token });
+          // .json({ message: `Successfully logged in ${username}!`, token });
+          .json({ message: "Successfully logged!", token });
       } else {
         res.status(401).json({ message: "You shall not pass!" });
       }

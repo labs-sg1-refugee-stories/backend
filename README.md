@@ -1,94 +1,111 @@
 # Refugee Stories - Backend
 
+This is a backend for the "Refugee Stories" Project Team
+
 ## Technical Design Document
+
 [Technical Design Document](https://docs.google.com/document/d/1AZU1sWxj3n63dbdo91oi3M3fNJRERgi_ZXTMFo9l7DU/edit?usp=sharing)
 
 # API Documentation
 
 #### Backend Deployment: https://refugee-stories-api.herokuapp.com/ <br>
 
-🚫This is a placeholder, replace the endpoints, accress controll, and descriptioin to match your project
+#### Register Route
 
-#### Organization Routes
+| Method | Endpoint    | Access Control | Description        |
+| ------ | ----------- | -------------- | ------------------ |
+| POST   | `/register` | none           | Creates a new user |
 
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+#### Login Route
 
-#### User Routes
+| Method | Endpoint  | Access Control | Description                                                       |
+| ------ | --------- | -------------- | ----------------------------------------------------------------- |
+| POST   | `/login`  | admin          | Use the credentials sent inside the body to authenticate the user |
+| GET    | `/logout` | admin          |                                                                   |
 
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+#### Users Route
 
-# Data Model
+| Method | Endpoint | Access Control | Description             |
+| ------ | -------- | -------------- | ----------------------- |
+| GET    | `/users` | none           | Returns all users by ID |
 
-🚫This is just an example. Replace this with your data model
+#### Stories Route
 
-#### ORGANIZATIONS
+| Method | Endpoint       | Access Control | Description                           |
+| ------ | -------------- | -------------- | ------------------------------------- |
+| GET    | `/stories`     | everyone       | Returns all stories approved by admin |
+| GET    | `/stories/:id` | everyone       | Returns all stories by ID             |
+| PUT    | `/stories/:id` | none           | Modify an existing story              |
+| DELETE | `/stories/:id` | none           | Deletes an existing story             |
+
+#### Submit A Story Route
+
+| Method | Endpoint                    | Access Control | Description                                         |
+| ------ | --------------------------- | -------------- | --------------------------------------------------- |
+| POST   | `/admin/stories`            | anyone         | Returns all stories to admin for approval/rejection |
+| GET    | `/admin/stories`            | admin          | Returns all stories to admin                        |
+| DELETE | `/stories/reject/:id`       | admin          | Deletes an already approved story from admin's page |
+| POST   | `admin/stories/approve/:id` | admin          | Returns all stories posted by the users.            |
+
+## Data Model
+
+#### STORIES
 
 ---
 
 ```
 {
   id: UUID
+  title: STRING
   name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
+  storytext: TEXT
+  country: STRING
 }
 ```
 
-#### USERS
+Example:
+
+```
+{
+"id": 2,
+"title": "A Home with a View",
+"name": "Zeinah",
+"storytext": "My children were born in the city and my whole family lived there, but we had to flee to Turkey during one of the outbreaks of fighting,” said Farah. “If we hadn’t left when we did we would have been killed along with so many other people. We left Syria at the right time.",
+"country": "Syria"
+}
+```
+
+#### ADMIN
 
 ---
 
 ```
 {
   id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
+  username: STRING
+  password: STRING
+}
+```
+
+Example:
+
+```
+{
+	"username": "dummy",
+	"password": "dummy"
 }
 ```
 
 ## Actions
 
-🚫 This is an example, replace this with the actions that pertain to your backend
+`add()` -> Creates a new admin and returns that admin.
 
-`getOrgs()` -> Returns all organizations
+`find()` -> Returns all stories
 
-`getOrg(orgId)` -> Returns a single organization by ID
+`findById(id)` -> Returns a single story by ID
 
-`addOrg(org)` -> Returns the created org
+`postPendingStory(post)` --> Creates a new story and returns that story.
 
-`updateOrg(orgId)` -> Update an organization by ID
+`getPendingStories()` -> Returns all the pending stories
 
-`deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
-`getUsers(orgId)` -> if no param all users
-
-`getUser(userId)` -> Returns a single user by user ID
-
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
-
-`updateUser(userId, changes object)` -> Updates a single user by ID.
-
-`deleteUser(userId)` -> deletes everything dependent on the user
+`rejectStory()` -> Deletes the story from admin route, if admin rejects it

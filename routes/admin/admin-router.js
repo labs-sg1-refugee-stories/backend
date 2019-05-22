@@ -58,15 +58,8 @@ router
     try {
       const story = await db("pending_stories").where({ id });
       const { title, name, storytext, country } = story[0];
-      console.log("story", story);
-      // const newId = await actions.approveStory(id, {
-      //   title,
-      //   name,
-      //   storytext,
-      //   country
-      // });
 
-      console.log("t", title, name, storytext, country);
+      //console.log("t", title, name, storytext, country);
       const [newId] = await db("stories").insert({
         title,
         name,

@@ -1,3 +1,4 @@
+// db is a configured instance of knex that knows how to talk to the database
 const db = require("../database/dbConfig.js");
 
 module.exports = {
