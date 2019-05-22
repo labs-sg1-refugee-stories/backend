@@ -36,16 +36,16 @@ This is a backend for the "Refugee Stories" Project Team
 | GET    | `/stories`     | everyone       | Returns all stories approved by admin |
 | GET    | `/stories/:id` | everyone       | Returns all stories by ID             |
 | PUT    | `/stories/:id` | none           | Modify an existing story              |
-| DELETE | `/stories/:id` | none           | Deletes an existing story             |
+| DELETE | `/stories/:id` | none           | Delete an existing story              |
 
 #### Submit A Story Route
 
-| Method | Endpoint                    | Access Control | Description                                         |
-| ------ | --------------------------- | -------------- | --------------------------------------------------- |
-| POST   | `/admin/stories`            | anyone         | Returns all stories to admin for approval/rejection |
-| GET    | `/admin/stories`            | admin          | Returns all stories to admin                        |
-| DELETE | `/stories/reject/:id`       | admin          | Deletes an already approved story from admin's page |
-| POST   | `admin/stories/approve/:id` | admin          | Returns all stories posted by the users.            |
+| Method | Endpoint                    | Access Control | Description                                                        |
+| ------ | --------------------------- | -------------- | ------------------------------------------------------------------ |
+| POST   | `/admin/stories`            | anyone         | Create and submit a story in a que for approval/rejection by admin |
+| GET    | `/admin/stories`            | admin          | Show all the submitted stories on the API                          |
+| DELETE | `admin/stories/reject/:id`  | admin          | Deletes an already approved story from admin's page                |
+| POST   | `admin/stories/approve/:id` | admin          | Returns all stories posted by the users.                           |
 
 ## Data Model
 
