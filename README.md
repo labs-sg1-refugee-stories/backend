@@ -45,7 +45,7 @@ This is a backend for the "Refugee Stories" Project Team
 | POST   | `/admin/stories`            | anyone         | Create and submit a story in a que for approval/rejection by admin |
 | GET    | `/admin/stories`            | admin          | Show all the submitted stories on the API                          |
 | DELETE | `admin/stories/reject/:id`  | admin          | Deletes an already approved story from admin's page                |
-| POST   | `admin/stories/approve/:id` | admin          | Returns all stories posted by the users.                           |
+| POST   | `admin/stories/approve/:id` | admin          | Returns all stories approved by admin to all stories page          |
 
 ## Data Model
 
