@@ -33,8 +33,8 @@ This is a backend for the "Refugee Stories" Project Team
 
 | Method | Endpoint       | Access Control | Description                           |
 | ------ | -------------- | -------------- | ------------------------------------- |
-| GET    | `/stories`     | everyone       | Returns all stories approved by admin |
-| GET    | `/stories/:id` | everyone       | Returns all stories by ID             |
+| GET    | `/stories`     | anyone         | Returns all stories approved by admin |
+| GET    | `/stories/:id` | anyone         | Returns all stories by ID             |
 | PUT    | `/stories/:id` | none           | Modify an existing story              |
 | DELETE | `/stories/:id` | none           | Delete an existing story              |
 
