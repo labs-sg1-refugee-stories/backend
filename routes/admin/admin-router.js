@@ -66,7 +66,7 @@ router
         storytext,
         country
       });
-      console.log("id", id);
+      //console.log("id", id);
       await db("pending_stories")
         .where({ id })
         .delete();
@@ -76,7 +76,7 @@ router
         res.status(404).json({ message: "The story could not be found." });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       next(error);
     }
   });
