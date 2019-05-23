@@ -1,3 +1,8 @@
+require("dotenv").config();
+const pg = require("pg");
+
+pg.defaults.ssl = true;
+
 module.exports = {
   development: {
     client: "sqlite3",
@@ -24,6 +29,11 @@ module.exports = {
     debug: true,
     connection: {
       filename: "./database/db_stories.db3"
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done);
+      }
     },
     migrations: {
       directory: "./database/migrations"
