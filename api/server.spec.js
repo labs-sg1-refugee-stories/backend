@@ -20,6 +20,7 @@ describe("Basic server tests", () => {
       const res = await request(server).get("/");
       expect(res.status).toBe(200);
     });
+
     it("Should return JSON using done callback", done => {
       // using the done callback
       request(server)
