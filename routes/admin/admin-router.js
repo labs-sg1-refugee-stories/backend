@@ -53,13 +53,12 @@ router.get("/stories", async (req, res) => {
 //   );
 router
   .route("/stories/approve/:id")
-
   .post(async ({ params: { id } }, res, next) => {
     try {
       const story = await db("pending_stories").where({ id });
       const { title, name, storytext, country } = story[0];
 
-      //console.log("t", title, name, storytext, country);
+      console.log("t", title, name, storytext, country);
       const [newId] = await db("stories").insert({
         title,
         name,
