@@ -55,7 +55,7 @@ function rejectStory(id) {
 }
 
 async function postPendingStory(post) {
-  const [id] = await db("pending_stories").insert(post);
+  const [id] = await db("pending_stories").insert(post, "id");
 
   return findById(id);
 }
