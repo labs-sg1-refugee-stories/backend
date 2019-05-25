@@ -1,19 +1,19 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
-const actions = require("./admin-model.js");
+const actions = require('./admin-model.js');
 //const restricted = require("../../auth/restricted-middleware.js");
 
-const db = require("../../database/dbConfig.js");
+const db = require('../../database/dbConfig.js');
 
 // GET for /admin/stories
-router.get("/stories", async (req, res) => {
+router.get('/stories', async (req, res) => {
   try {
     const stories = await actions.getPendingStories();
     res.status(200).json(stories);
   } catch (error) {
     res
       .status(500)
-      .json({ message: "We ran into an error retrieving the stories." });
+      .json({ message: 'We ran into an error retrieving the stories.' });
   }
 });
 
@@ -52,27 +52,28 @@ router.get("/stories", async (req, res) => {
 //     }
 //   );
 router
-  .route("/stories/approve/:id")
+  .route('/stories/approve/:id')
   .post(async ({ params: { id } }, res, next) => {
     try {
-      const story = await db("pending_stories").where({ id });
+      const story = await db('pending_stories').where({ id });
       const { title, name, storytext, country } = story[0];
-
-      console.log("t", title, name, storytext, country);
-      const [newId] = await db("stories").insert({
-        title,
-        name,
-        storytext,
-        country
-      });
-      //console.log("id", id);
-      await db("pending_stories")
+      const approvedStory = await db('stories')
+        .insert({
+          title,
+          name,
+          storytext,
+          country,
+        })
+        .returning('*');
+      console.log(' 🦄', approvedStory);
+      const newId = approvedStory[0].id;
+      await db('pending_stories')
         .where({ id })
         .delete();
       if (newId) {
         res.status(201).json({ newStoryID: newId });
       } else {
-        res.status(404).json({ message: "The story could not be found." });
+        res.status(404).json({ message: 'The story could not be found.' });
       }
     } catch (error) {
       //console.log(error);
@@ -82,21 +83,21 @@ router
 
 // DELETE for /stories/reject/:id
 router
-  .route("/stories/reject/:id")
+  .route('/stories/reject/:id')
   .delete(async ({ params: { id } }, res, next) => {
     try {
       const count = await actions.rejectStory(id);
       if (count) {
         res.status(200).end();
       } else {
-        res.status(404).json({ message: "This story could not be located." });
+        res.status(404).json({ message: 'This story could not be located.' });
       }
     } catch (error) {
       next(error);
     }
   });
 
-router.post("/stories", async (req, res) => {
+router.post('/stories', async (req, res) => {
   const story = req.body;
 
   if (story.title && story.storytext && story.country) {
@@ -106,12 +107,12 @@ router.post("/stories", async (req, res) => {
     } catch (error) {
       res
         .status(500)
-        .json({ message: "We ran into an error adding your story." });
+        .json({ message: 'We ran into an error adding your story.' });
     }
   } else {
     res
       .status(400)
-      .json({ message: "Please enter your story, name and country." });
+      .json({ message: 'Please enter your story, name and country.' });
   }
 });
 module.exports = router;
