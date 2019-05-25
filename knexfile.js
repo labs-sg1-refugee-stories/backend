@@ -1,7 +1,8 @@
+requite('dotenv').config();
 module.exports = {
   development: {
     client: 'pg',
-    connection: 'postgres://localhost:5432/refugee',
+    connection: process.env.LOCAL_DB,
     migrations: {
       directory: './database/migrations',
     },
