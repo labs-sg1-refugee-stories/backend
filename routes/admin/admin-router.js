@@ -55,23 +55,26 @@ router
   .route('/stories/approve/:id')
   .post(async ({ params: { id } }, res, next) => {
     try {
-      const story = await db('pending_stories').where({ id });
-      const { title, name, storytext, country } = story[0];
-      const approvedStory = await db('stories')
-        .insert({
-          title,
-          name,
-          storytext,
-          country,
-        })
-        .returning('*');
-      console.log(' 🦄', approvedStory);
-      const newId = approvedStory[0].id;
-      await db('pending_stories')
+      const story = await db('pending_stories')
         .where({ id })
-        .delete();
-      if (newId) {
-        res.status(201).json({ newStoryID: newId });
+        .first();
+      if (story) {
+        const { title, name, storytext, country } = story;
+        const approvedStory = await db('stories')
+          .insert({
+            title,
+            name,
+            storytext,
+            country,
+          })
+          .returning('*');
+        const newId = approvedStory[0].id;
+        await db('pending_stories')
+          .where({ id })
+          .delete();
+        if (newId) {
+          res.status(201).json({ newStoryID: newId });
+        }
       } else {
         res.status(404).json({ message: 'The story could not be found.' });
       }
