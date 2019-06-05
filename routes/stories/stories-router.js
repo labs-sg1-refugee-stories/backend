@@ -17,11 +17,12 @@ router.get('/', async (req, res) => {
     const stories = await Stories.find()
       .limit(limit)
       .offset(offset);
-    //* Need to notify frontend of total number of stories
-    const totalStories = await db('stories')
+    //* Need to notify frontend of total number of stories (count), limit, and offset
+    const { count } = await db('stories')
       .count()
       .first();
-    res.status(200).json({ stories, ...totalStories });
+    //* Pagination info sent to client in meta object
+    res.status(200).json({ stories, meta: { count, limit, offset } });
   } catch (error) {
     res
       .status(500)
