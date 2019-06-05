@@ -16,6 +16,7 @@ const adminRouter = require('../routes/admin/admin-router.js');
 server.use(helmet());
 server.use(express.json()); // built-in
 server.use(cors());
+server.use(logger('dev'));
 
 server.use('/register', registerRouter);
 server.use('/login', loginRouter);
@@ -23,7 +24,6 @@ server.use('/users', usersRouter);
 server.use('/logout', logoutRouter);
 server.use('/stories', storiesRouter);
 server.use('/admin', adminRouter);
-server.use(logger('dev'));
 
 // sanity check route
 server.get('/', (req, res) => {
