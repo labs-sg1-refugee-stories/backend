@@ -1,4 +1,7 @@
 const express = require('express');
+//* Need to import db for pagination feature
+//TODO: Clean up models with regard to pagination
+const db = require('../../database/dbConfig.js');
 
 const Stories = require('./stories-model.js');
 
@@ -14,7 +17,11 @@ router.get('/', async (req, res) => {
     const stories = await Stories.find()
       .limit(limit)
       .offset(offset);
-    res.status(200).json(stories);
+    //* Need to notify frontend of total number of stories
+    const totalStories = await db('stories')
+      .count()
+      .first();
+    res.status(200).json({ stories, ...totalStories });
   } catch (error) {
     res
       .status(500)
