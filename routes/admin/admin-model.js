@@ -1,21 +1,15 @@
-const db = require("../../database/dbConfig.js");
+const db = require('../../database/dbConfig.js');
 
 module.exports = {
   getPendingStories,
   // approveStory,
   rejectStory,
   postPendingStory,
-  findById
+  findById,
 };
 
 function getPendingStories() {
-  return db("pending_stories").orderBy(
-    "id",
-    "title",
-    "name",
-    "storytext",
-    "country"
-  );
+  return db('pending_stories').select('*');
 }
 
 // function approveStory(id, story) {
@@ -49,19 +43,19 @@ function getPendingStories() {
 // }
 
 function rejectStory(id) {
-  return db("pending_stories")
+  return db('pending_stories')
     .where({ id })
     .del();
 }
 
 async function postPendingStory(post) {
-  const [id] = await db("pending_stories").insert(post, "id");
+  const [id] = await db('pending_stories').insert(post, 'id');
 
   return findById(id);
 }
 
 function findById(id) {
-  return db("pending_stories")
+  return db('pending_stories')
     .where({ id })
     .first();
 }
