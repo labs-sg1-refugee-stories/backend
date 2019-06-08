@@ -1,20 +1,15 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('comments', table => {
     table.increments();
+    table.string('name', 128).notNullable();
     table.string('text').notNullable();
-    table
-      .integer('userId')
-      .references('id')
-      .inTable('users')
-      .onDelete('cascade')
-      .onUpdate('cascade')
-      .unsigned();
     table
       .integer('storyId')
       .references('id')
       .inTable('stories')
       .onDelete('cascade')
       .onUpdate('cascade')
+      .notNullable()
       .unsigned();
     table.boolean('deleted').defaultTo(false);
     table.boolean('edited').defaultTo(false);
@@ -23,5 +18,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.truncate('comments');
+  return knex.schema.dropTableIfExists('comments');
 };

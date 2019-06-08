@@ -1,11 +1,9 @@
 //* Creates http CRUD handlers
 
-module.exports = async (db, table) => ({
+module.exports = (db, table) => ({
   find(req, res, next) {
-    const items = db(table);
-    res
-      .status(200)
-      .json(items)
+    db(table)
+      .then(items => res.status(200).json(items))
       .catch(next);
   },
 

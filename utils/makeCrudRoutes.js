@@ -2,6 +2,7 @@
 
 module.exports = (router, handlers) => {
   //* Destructures methods
+  console.log(handlers);
   const { find, findById, create, update, remove } = handlers;
   //* Creates routes if method exist
   find && router.get('/', find);

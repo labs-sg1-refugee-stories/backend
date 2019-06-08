@@ -20,10 +20,9 @@ server.use(logger('dev'));
 
 server.use('/register', registerRouter);
 server.use('/login', loginRouter);
-server.use('/users', usersRouter);
+server.use('/admins', adminsRouter);
 server.use('/logout', logoutRouter);
 server.use('/stories', storiesRouter);
-server.use('/admin', adminRouter);
 server.use('/comments', commentsRouter);
 // sanity check route
 server.get('/', (req, res) => {

@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const db = require('../../database/dbConfig');
 const makeCrudMethods = require('../../utils/makeCrudMethods');
-const makeRoutes = require('../../utils/makeRoutes');
+const makeCrudRoutes = require('../../utils/makeCrudRoutes');
 
 const handlers = makeCrudMethods(db, 'comments');
-makeRoutes(router, handlers);
+makeCrudRoutes(router, handlers);
 
 module.exports = router;
