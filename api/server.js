@@ -2,7 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('morgan');
-
+const errorHandler = require('../middleware/errorHandler');
 const server = express();
 
 const registerRouter = require('../routes/register/register-router.js');
@@ -11,6 +11,7 @@ const usersRouter = require('../routes/users/users-router.js');
 const logoutRouter = require('../routes/logout/logout-router.js');
 const storiesRouter = require('../routes/stories/stories-router.js');
 const adminRouter = require('../routes/admin/admin-router.js');
+const commentsRouter = require('../routes/comments');
 
 // configure global middlewares
 server.use(helmet());
@@ -24,7 +25,8 @@ server.use('/users', usersRouter);
 server.use('/logout', logoutRouter);
 server.use('/stories', storiesRouter);
 server.use('/admin', adminRouter);
-
+server.use('/comments', commentsRouter);
+server.use(errorHandler);
 // sanity check route
 server.get('/', (req, res) => {
   res.status(200).send(`<h2>Welcome to the Refugee Stories API...</h2>`);

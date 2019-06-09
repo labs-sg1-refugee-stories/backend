@@ -17,89 +17,7 @@ router.get('/stories', async (req, res) => {
   }
 });
 
-// POST for admin/stories/approve/:id
-// router
-//   .route("/stories/approve/:id")
-
-//   .post(
-//     async (
-//       { body: { title, name, storytext, country }, params: { id } },
-//       res,
-//       next
-//     ) => {
-//       if (title && storytext) {
-//         try {
-//           const newId = await actions.approveStory(id, {
-//             title,
-//             name,
-//             storytext,
-//             country
-//           });
-//           if (newId) {
-//             res.status(201).json({ newStoryID: newId });
-//           } else {
-//             res.status(404).json({ message: "The story could not be found." });
-//           }
-//         } catch (error) {
-//           console.log(error);
-//           next(error);
-//         }
-//       } else {
-//         res.status(400).json({
-//           message: "Please provide a title and story to add."
-//         });
-//       }
-//     }
-//   );
-router
-  .route('/stories/approve/:id')
-  .post(async ({ params: { id } }, res, next) => {
-    try {
-      const story = await db('pending_stories')
-        .where({ id })
-        .first();
-      if (story) {
-        const { title, name, storytext, country } = story;
-        const approvedStory = await db('stories')
-          .insert({
-            title,
-            name,
-            storytext,
-            country,
-          })
-          .returning('*');
-        const newId = approvedStory[0].id;
-        await db('pending_stories')
-          .where({ id })
-          .delete();
-        if (newId) {
-          res.status(201).json({ newStoryID: newId });
-        }
-      } else {
-        res.status(404).json({ message: 'The story could not be found.' });
-      }
-    } catch (error) {
-      //console.log(error);
-      next(error);
-    }
-  });
-
-// DELETE for /stories/reject/:id
-router
-  .route('/stories/reject/:id')
-  .delete(async ({ params: { id } }, res, next) => {
-    try {
-      const count = await actions.rejectStory(id);
-      if (count) {
-        res.status(200).end();
-      } else {
-        res.status(404).json({ message: 'This story could not be located.' });
-      }
-    } catch (error) {
-      next(error);
-    }
-  });
-
+// POST for /admin/stories
 router.post('/stories', async (req, res) => {
   const story = req.body;
 
@@ -118,4 +36,33 @@ router.post('/stories', async (req, res) => {
       .json({ message: 'Please enter your story, name and country.' });
   }
 });
+
+// POST for admin/stories/approve/:id
+router.post('/stories/approve/:id', async ({ params: { id } }, res, next) => {
+  try {
+    const newId = await actions.approveStory(id);
+    if (newId) {
+      res.status(201).json({ newStoryID: newId });
+    } else {
+      res.status(404).json({ message: 'The story could not be found.' });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE for /stories/reject/:id
+router.delete('/stories/reject/:id', async ({ params: { id } }, res, next) => {
+  try {
+    const count = await actions.rejectStory(id);
+    if (count) {
+      res.status(200).json(count);
+    } else {
+      res.status(404).json({ message: 'This story could not be located.' });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
