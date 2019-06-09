@@ -110,4 +110,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.get('/:id/comments', async (req, res) => {
+  try {
+    const story = await Stories.findById(Number(req.params.id));
+    console.log(story);
+    if (story.id) {
+      const comments = await db('comments').where({
+        storyId: Number(story.id),
+      });
+      console.log('comments', comments);
+      story.comments = comments;
+      res.status(200).json(story);
+    } else {
+      res.status(404).json({ message: 'We could not find a story.' });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'We ran into an error retrieving a story.' });
+  }
+});
+
 module.exports = router;
