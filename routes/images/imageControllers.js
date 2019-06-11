@@ -2,7 +2,7 @@ require('dotenv').config()
 const multer = require('multer')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
-const db = require('../../dbConfig')
+const db = require('../../database/dbConfig)
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -21,7 +21,7 @@ const upload = multer({ storage }).single('profile_pic')
 
 module.exports = {
   async uploadImg(req, res, next) {
-    const user_id = req.user === undefined ? req.body.user : req.user.id
+    const user_id = req.body.user 
     upload(req, res, function(err) {
       if (err) {
         console.log(err)
@@ -37,7 +37,7 @@ module.exports = {
   },
   async getImg(req, res, next) {
     try {
-      const user_id = req.user === undefined ? req.body.user_id : req.user.id
+      const user_id =  req.body.user_id 
       const selectPromise = await db('users')
         .where({ id: user_id })
         .select('profile_picture')
