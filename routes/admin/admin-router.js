@@ -1,3 +1,28 @@
+require('dotenv').config();
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+// console.log(
+//   'env keys ==> \n',
+//   process.env.CLOUDINARY_CLOUD_NAME,
+//   process.env.CLOUDINARY_KEY,
+//   process.env.CLOUDINARY_SECRET
+// );
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'demo',
+  allowedFormats: ['jpg', 'png', 'gif'],
+  transformation: [{ width: 500, height: 500, crop: 'scale' }],
+});
+
+const upload = multer({ storage }).single('photoUrl');
+
 const router = require('express').Router();
 
 const actions = require('./admin-model.js');
@@ -18,23 +43,33 @@ router.get('/stories', async (req, res) => {
 });
 
 // POST for /admin/stories
-router.post('/stories', async (req, res) => {
-  const story = req.body;
+router.post('/stories', upload, async (req, res) => {
+  // const story = req.body;
+  console.log('REQ.BODY ====>>>>>', req.body);
 
-  if (story.title && story.storytext && story.country) {
-    try {
-      const inserted = await actions.postPendingStory(story);
-      res.status(201).json(inserted);
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: 'We ran into an error adding your story.' });
-    }
-  } else {
-    res
-      .status(400)
-      .json({ message: 'Please enter your story, name and country.' });
-  }
+  console.log('FILE HERE ??? 🦄', req.file);
+  // upload(req, res, err => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   console.log('FILE HERE ??? 🦄', req.file, req.files);
+  //   res.status(200).json({ success: 'added image' });
+  // });
+  // console.log('HERHERHEHRHEHN\n', req.file, req.files);
+  // if (story.title && story.storytext && story.country) {
+  //   try {
+  //     const inserted = await actions.postPendingStory(story);
+  //     res.status(201).json(inserted);
+  //   } catch (error) {
+  //     res
+  //       .status(500)
+  //       .json({ message: 'We ran into an error adding your story.' });
+  //   }
+  // } else {
+  //   res
+  //     .status(400)
+  //     .json({ message: 'Please enter your story, name and country.' });
+  // }
 });
 
 // POST for admin/stories/approve/:id

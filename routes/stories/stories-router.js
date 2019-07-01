@@ -1,30 +1,28 @@
-require('dotenv').config()
-const multer = require('multer')
-const cloudinary = require('cloudinary')
-const cloudinaryStorage = require('multer-storage-cloudinary')
-
+require('dotenv').config();
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+const router = require('express').Router();
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
-})
+});
 
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'rs',
   allowedFormats: ['jpg', 'png', 'gif'],
   transformation: [{ width: 500, height: 500, crop: 'scale' }],
-})
+});
 
-const upload = multer({ storage }).single('profile_pic')
+const upload = multer({ storage }).single('profile_pic');
 
 //* Need to import db for pagination feature
 //TODO: Clean up models with regard to pagination
-const db = require('../../database/dbConfig.js');
+const db = require('../../database/dbConfig');
 
 const Stories = require('./stories-model.js');
-
-const router = express.Router();
 
 router.get('/', async (req, res) => {
   //* Destructures limit and offset from req.query
@@ -70,15 +68,15 @@ router.post('/', async (req, res) => {
 
   if (story.title && story.storytext && story.country) {
     try {
-      upload(req, res, function(err) {
+      upload(req, res, async function(err) {
         if (err) {
-          console.log(err)
+          console.log(err);
         }
-        db('users')
-          story.photoUrl = req.file.secure_url
-          const inserted = await Stories.add(story);
-          res.status(201).json(inserted);
-      })
+        db('users');
+        story.photoUrl = req.file.secure_url;
+        const inserted = await Stories.add(story);
+        res.status(201).json(inserted);
+      });
       const inserted = await Stories.add(story);
       res.status(201).json(inserted);
     } catch (error) {
