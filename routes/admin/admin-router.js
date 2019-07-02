@@ -49,7 +49,7 @@ router.get('/stories', async (req, res) => {
 router.post('/stories', upload, async (req, res) => {
   const story = req.query;
 
-  story.photoUrl = req.files.photUrl && req.files.photoUrl[0].secure_url;
+  story.photoUrl = req.files.photoUrl && req.files.photoUrl[0].secure_url;
   story.authorUrl = req.files.authorUrl && req.files.authorUrl[0].secure_url;
 
   if (story.title && story.storytext && story.country) {
