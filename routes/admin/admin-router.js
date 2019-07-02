@@ -44,32 +44,25 @@ router.get('/stories', async (req, res) => {
 
 // POST for /admin/stories
 router.post('/stories', upload, async (req, res) => {
-  // const story = req.body;
-  console.log('REQ.BODY ====>>>>>', req.body);
+  const story = req.query;
 
-  console.log('FILE HERE ??? 🦄', req.file);
-  // upload(req, res, err => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  //   console.log('FILE HERE ??? 🦄', req.file, req.files);
-  //   res.status(200).json({ success: 'added image' });
-  // });
-  // console.log('HERHERHEHRHEHN\n', req.file, req.files);
-  // if (story.title && story.storytext && story.country) {
-  //   try {
-  //     const inserted = await actions.postPendingStory(story);
-  //     res.status(201).json(inserted);
-  //   } catch (error) {
-  //     res
-  //       .status(500)
-  //       .json({ message: 'We ran into an error adding your story.' });
-  //   }
-  // } else {
-  //   res
-  //     .status(400)
-  //     .json({ message: 'Please enter your story, name and country.' });
-  // }
+  // console.log('FILE HERE ??? 🦄', req.file, req.query);
+  story.photoUrl = req.file.secure_url;
+
+  if (story.title && story.storytext && story.country) {
+    try {
+      const inserted = await actions.postPendingStory(story);
+      res.status(201).json(inserted);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: 'We ran into an error adding your story.' });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: 'Please enter your story, name and country.' });
+  }
 });
 
 // POST for admin/stories/approve/:id
