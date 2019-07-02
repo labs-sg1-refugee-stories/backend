@@ -12,7 +12,6 @@ const logoutRouter = require('../routes/logout/logout-router.js');
 const storiesRouter = require('../routes/stories/stories-router.js');
 const adminRouter = require('../routes/admin/admin-router.js');
 const commentsRouter = require('../routes/comments');
-const imageRoutes = require('../routes/images/imageRoutes');
 // configure global middlewares
 server.use(helmet());
 server.use(express.json()); // built-in
@@ -26,7 +25,6 @@ server.use('/logout', logoutRouter);
 server.use('/stories', storiesRouter);
 server.use('/admin', adminRouter);
 server.use('/comments', commentsRouter);
-server.use('/images', imageRoutes);
 
 server.use(errorHandler);
 // sanity check route
