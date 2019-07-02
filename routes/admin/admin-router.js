@@ -21,7 +21,10 @@ const storage = cloudinaryStorage({
   transformation: [{ width: 500, height: 500, crop: 'scale' }],
 });
 
-const upload = multer({ storage }).single('photoUrl');
+const upload = multer({ storage }).fields([
+  { name: 'photoUrl', maxCount: 2 },
+  { name: 'authorUrl', maxCount: 2 },
+]);
 
 const router = require('express').Router();
 
@@ -46,8 +49,13 @@ router.get('/stories', async (req, res) => {
 router.post('/stories', upload, async (req, res) => {
   const story = req.query;
 
-  // console.log('FILE HERE ??? 🦄', req.file, req.query);
-  story.photoUrl = req.file.secure_url;
+  console.log(
+    'FILE HERE ??? 🦄',
+    req.files.photoUrl[0].secure_url,
+    req.files.authorUrl[0].secure_url
+  );
+  story.photoUrl = req.files.photoUrl[0].secure_url;
+  story.authorUrl = req.files.authorUrl[0].secure_url;
 
   if (story.title && story.storytext && story.country) {
     try {
