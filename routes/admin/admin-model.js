@@ -17,13 +17,15 @@ async function approveStory(id) {
     .where({ id })
     .first();
   if (story.id) {
-    const { title, name, storytext, country } = story;
+    const { title, name, storytext, country, photoUrl, authorUrl } = story;
     const approvedStory = await db('stories')
       .insert({
         title,
         name,
         storytext,
         country,
+        photoUrl,
+        authorUrl,
       })
       .returning('*');
     await db('pending_stories')

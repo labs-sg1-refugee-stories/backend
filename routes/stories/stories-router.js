@@ -1,22 +1,6 @@
 require('dotenv').config();
-const multer = require('multer');
-const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
+
 const router = require('express').Router();
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET,
-});
-
-const storage = cloudinaryStorage({
-  cloudinary: cloudinary,
-  folder: 'rs',
-  allowedFormats: ['jpg', 'png', 'gif'],
-  transformation: [{ width: 500, height: 500, crop: 'scale' }],
-});
-
-const upload = multer({ storage }).single('profile_pic');
 
 //* Need to import db for pagination feature
 //TODO: Clean up models with regard to pagination
@@ -68,15 +52,6 @@ router.post('/', async (req, res) => {
 
   if (story.title && story.storytext && story.country) {
     try {
-      upload(req, res, async function(err) {
-        if (err) {
-          console.log(err);
-        }
-        db('users');
-        story.photoUrl = req.file.secure_url;
-        const inserted = await Stories.add(story);
-        res.status(201).json(inserted);
-      });
       const inserted = await Stories.add(story);
       res.status(201).json(inserted);
     } catch (error) {
