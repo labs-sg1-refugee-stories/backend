@@ -1,3 +1,31 @@
+require('dotenv').config();
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
+// console.log(
+//   'env keys ==> \n',
+//   process.env.CLOUDINARY_CLOUD_NAME,
+//   process.env.CLOUDINARY_KEY,
+//   process.env.CLOUDINARY_SECRET
+// );
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'demo',
+  allowedFormats: ['jpg', 'png', 'gif'],
+  transformation: [{ width: 500, height: 500, crop: 'scale' }],
+});
+
+const upload = multer({ storage }).fields([
+  { name: 'photoUrl', maxCount: 2 },
+  { name: 'authorUrl', maxCount: 2 },
+]);
+
 const router = require('express').Router();
 
 const actions = require('./admin-model.js');
@@ -18,8 +46,16 @@ router.get('/stories', async (req, res) => {
 });
 
 // POST for /admin/stories
-router.post('/stories', async (req, res) => {
-  const story = req.body;
+router.post('/stories', upload, async (req, res) => {
+  const story = req.query;
+
+  console.log(
+    'FILE HERE ??? 🦄',
+    req.files.photoUrl[0].secure_url,
+    req.files.authorUrl[0].secure_url
+  );
+  story.photoUrl = req.files.photoUrl[0].secure_url;
+  story.authorUrl = req.files.authorUrl[0].secure_url;
 
   if (story.title && story.storytext && story.country) {
     try {
