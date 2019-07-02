@@ -2,25 +2,26 @@ require('dotenv').config();
 const multer = require('multer');
 const cloudinary = require('cloudinary');
 const cloudinaryStorage = require('multer-storage-cloudinary');
-// console.log(
-//   'env keys ==> \n',
-//   process.env.CLOUDINARY_CLOUD_NAME,
-//   process.env.CLOUDINARY_KEY,
-//   process.env.CLOUDINARY_SECRET
-// );
+
+// configures cloudinary instance
+// ENV variable names must be:
+// CLOUD_NAME, API_KEY, API_SECRET
+// for upload middleware to function properly
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });
 
+// Accepts cloudinary instance, returns storage config
+// needed for multer instance
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'demo',
   allowedFormats: ['jpg', 'png', 'gif'],
-  transformation: [{ width: 500, height: 500, crop: 'scale' }],
 });
 
+// upload: middleware that will add req.files object
 const upload = multer({ storage }).fields([
   { name: 'photoUrl', maxCount: 2 },
   { name: 'authorUrl', maxCount: 2 },
@@ -47,8 +48,11 @@ router.get('/stories', async (req, res) => {
 
 // POST for /admin/stories
 router.post('/stories', upload, async (req, res) => {
+  // title, storytext, name, country on req.query
   const story = req.query;
 
+  // add photoUrl and authorUrl to story object before insertion
+  // upload makes req.files available with photo's cloudinary url
   story.photoUrl = req.files.photoUrl && req.files.photoUrl[0].secure_url;
   story.authorUrl = req.files.authorUrl && req.files.authorUrl[0].secure_url;
 
